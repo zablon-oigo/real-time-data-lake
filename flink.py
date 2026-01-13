@@ -37,3 +37,24 @@ CREATE TABLE IF NOT EXISTS `raw`.posts (
 """)
 
 
+t_env.execute_sql("USE CATALOG default_catalog")
+
+t_env.execute_sql("""
+CREATE TABLE kafka_posts (
+    `uuid` STRING,          
+    `event_type` STRING, 
+    `title` STRING,
+    `body` STRING,      
+    `timestamp` STRING,  
+    ts AS TO_TIMESTAMP(SUBSTR(REPLACE(`timestamp`, 'T', ' '), 1, 19)),
+    WATERMARK FOR ts AS ts - INTERVAL '5' SECOND
+) WITH (
+    'connector'='kafka',
+    'topic'='posts',
+    'properties.bootstrap.servers'='localhost:9095,localhost:9097,localhost:9102',
+    'format'='json',
+    'scan.startup.mode'='earliest-offset'
+)
+""")
+
+
