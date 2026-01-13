@@ -58,3 +58,17 @@ CREATE TABLE kafka_posts (
 """)
 
 
+table_result = t_env.execute_sql("""
+INSERT INTO lakehouse.`raw`.posts 
+SELECT 
+    `uuid` AS post_id,       
+    'user_unknown' AS user_id, 
+    `title`, 
+    `body` AS content,      
+    ts 
+FROM kafka_posts
+""")
+
+table_result.wait()
+
+
