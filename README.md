@@ -2,7 +2,6 @@
 
 This project demonstrates a practical end-to-end solution for building a real-time data lake. It showcases how to integrate Apache Kafka, Flink, Hadoop, and Apache Iceberg to stream data from a FastAPI application into a scalable, reliable data lake architecture.
 
-The goal is to enable real-time data ingestion, processing, and durable storage so that teams can power analytics, monitoring, and downstream applications without batch delays.
 
 #### Architecture Diagram
 
@@ -10,15 +9,15 @@ The goal is to enable real-time data ingestion, processing, and durable storage 
 Before running the project , ensure you have the following installed:
 |  Tool | Version  | Purpose  |
 |---|---|---|
-|  Java |  11+ |  Runtime for Kafka |
+|  Java |  11+ |  Runtime for Hadoop/Kafka/Flink |
 |  Python | 3.9+  | Running FastAPI Backend   |
 |  Kafka | 4.0.0+  | Distributed Event Streaming   |
-|  Hadoop |   |   |  Distributed Storage
+|  Hadoop | 3.x  | Catalog management & S3 Connectivity  | 
 |  Iceberg | Latest  | Table Format  |
-|  Flink | Latest  | Ingest Stream from Kafka topic   |
-|  S3 | Latest  | Data Lake   |
+|  Flink | 2.1+ | Stream Processing Engine  |
+|  S3 | -  | Cloud Object Storage  |
 |  Uv | Latest  | Python Package Management   |
-
+|  httpie | Latest  | API Testing   |
 
 #### Key Benefits
 - Near real-time data availability
@@ -81,7 +80,7 @@ Configure Hadoop to communicate with your S3 bucket. Replace placeholders with y
 
 #### Execution Steps
 
-Start the Hadoop and Flink clusters:
+**Step 1:** Start the Hadoop and Flink clusters:
 
 ```bash
 # Start Hadoop (HDFS/YARN)
@@ -91,17 +90,17 @@ $HADOOP_HOME/sbin/start-all.sh
 $FLINK_HOME/bin/start-cluster.sh
 ```
 
-Launch FastAPI 
+**Step 2:** Launch FastAPI 
 ```bash
 fastapi dev 
 ```
-Run the Flink Stream Processor
+ **Step 3:** Run the Flink Stream Processor
 
 In a new terminal, execute the PyFlink script to begin consuming Kafka events and writing to Iceberg:
 ```bash
 py flink.py
 ```
-Test the Pipeline
+**Step 4:** Test the Pipeline
 
 Send a sample payload to the API:
 
@@ -110,7 +109,7 @@ curl -X POST http://localhost:8000/posts \
      -H "Content-Type: application/json" \
      -d '{"title": "Hello Iceberg", "body": "Testing real-time ingestion"}'
 ```
-Verification
+**Step 5:** Verification
 
 Verify that data has been successfully written to your S3-backed Iceberg table using the Hadoop CLI:
 ```bash
