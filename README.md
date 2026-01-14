@@ -4,6 +4,7 @@ This project demonstrates a practical end-to-end solution for building a real-ti
 
 
 #### Architecture Diagram
+<img width="1078" height="357" alt="s3 drawio(1)" src="https://github.com/user-attachments/assets/46b8a888-84e0-40b3-9a90-5c0143d49be4" />
 
 #### Prequisites
 Before running the project , ensure you have the following installed:
